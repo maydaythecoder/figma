@@ -1,10 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Learninja Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!--
+      NOTE: The Figma design specifies 'Gilroy' and 'Graphik' fonts. These are premium fonts.
+      I've used 'Manrope' and 'Jost' from Google Fonts as free, visually similar alternatives.
+      If you have access to Gilroy and Graphik, you can update the font configuration below.
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@600&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
@@ -15,492 +23,375 @@
                         accent: '#F94874',
                         dark: '#1F1C3B',
                         light: '#F5F7F9',
-                        muted: '#85878D'
+                        muted: '#85878D',
+                        'course-1': '#E1E2F6',
+                        'course-2': '#F8EFE2',
+                        'course-3': '#EFF7E2',
+                        'course-1-light': 'rgba(252, 249, 255, 0.5)',
+                        'course-2-light': 'rgba(250, 245, 236, 0.5)',
+                        'course-3-light': 'rgba(246, 251, 238, 0.5)',
                     },
                     fontFamily: {
-                        'gilroy': ['Gilroy', 'sans-serif']
-                    }
-                }
-            }
-        }
+                        gilroy: ['Manrope', 'sans-serif'],
+                        graphik: ['Jost', 'sans-serif'],
+                    },
+                },
+            },
+        };
     </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-
-        /* Bar heights for the chart (Hours Spent) */
-        .bar-jan-study { height: 60px; }
-        .bar-jan-exams { height: 40px; }
-        .bar-feb-study { height: 35px; }
-        .bar-feb-exams { height: 25px; }
-        .bar-mar-study { height: 80px; }
-        .bar-mar-exams { height: 55px; }
-        .bar-apr-study { height: 45px; }
-        .bar-apr-exams { height: 30px; }
-        .bar-may-study { height: 20px; }
-        .bar-may-exams { height: 15px; }
+        body {
+            font-family: 'Manrope', sans-serif;
+        }
     </style>
 </head>
-<body class="bg-gray-50">
+
+<body class="bg-white">
     <div class="flex h-screen">
-        <!-- Sidebar -->
-        <aside class="w-70 bg-light rounded-bl-3xl rounded-tl-3xl p-6">
+        <!-- Left Sidebar -->
+        <aside class="w-72 bg-light p-6 rounded-l-3xl flex flex-col">
             <!-- Logo -->
-            <div class="flex items-center gap-3 mb-16">
-                <div class="w-10 h-10 bg-gradient-to-br from-orange-300 to-primary rounded-lg flex items-center justify-center">
-                    <span class="text-white font-bold text-lg">L</span>
-                </div>
-                <h1 class="text-2xl font-bold text-dark">Learninja</h1>
-                <div class="w-2 h-2 bg-orange-300 rounded-full"></div>
+            <div class="flex items-center gap-2 mb-16">
+                <img src="http://localhost:3845/assets/c716fc4782ae3f0d7e2c58cb4c3cbd7897689fc7.svg" alt="Learninja Logo" class="h-10 w-10" />
+                <h1 class="text-2xl font-graphik font-semibold text-dark">Learninja</h1>
+                <div class="w-2 h-2 bg-secondary rounded-full"></div>
             </div>
 
             <!-- Navigation -->
-            <nav class="space-y-8">
+            <nav class="flex flex-col space-y-2">
                 <a href="#" class="flex items-center gap-4 bg-black text-white px-4 py-3 rounded-xl">
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M20 15H24L24.1543 14.9961C25.6883 14.9184 26.9184 13.6883 26.9961 12.1543L27 12V8C27 6.39489 25.7394 5.08421 24.1543 5.00391L24 5H20C18.3431 5 17 6.34315 17 8V12L17.0039 12.1543C17.0842 13.7394 18.3949 15 20 15Z"/>
-                    </svg>
+                    <img src="http://localhost:3845/assets/2fd1d76ccd1502ee03a4ce70a30bcaf5afb11918.svg" class="w-6 h-6" alt="Overview Icon"/>
                     <span class="font-medium">Overview</span>
                 </a>
-
-                <div class="space-y-4">
-                    <a href="#" class="flex items-center gap-4 text-dark hover:bg-gray-100 px-4 py-3 rounded-xl">
-                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M16 10C16 10.4142 15.6642 10.75 15.25 10.75H8.75C8.33579 10.75 8 10.4142 8 10C8 9.58579 8.33579 9.25 8.75 9.25H15.25C15.6642 9.25 16 9.58579 16 10Z"/>
-                        </svg>
-                        <span class="font-medium">Assignment</span>
-                    </a>
-
-                    <a href="#" class="flex items-center justify-between text-dark hover:bg-gray-100 px-4 py-3 rounded-xl">
-                        <div class="flex items-center gap-4">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M22.3119 10.0113C22.5199 11.0961 21.6046 12 20.5 12H14C12.8954 12 12 11.1046 12 10V3.50003C12 2.39546 12.9039 1.48014 13.9887 1.68811C18.1928 2.49408 21.506 5.80721 22.3119 10.0113Z"/>
-                            </svg>
-                            <span class="font-medium">Reports</span>
-                        </div>
-                        <span class="bg-accent text-white text-xs px-2 py-1 rounded-full">12</span>
-                    </a>
-
-                    <a href="#" class="flex items-center gap-4 text-dark hover:bg-gray-100 px-4 py-3 rounded-xl">
-                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M11.9999 16.5C11.5857 16.5 11.2499 16.1642 11.2499 15.75V13.75H9.24994C8.83573 13.75 8.49994 13.4142 8.49994 13C8.49994 12.5858 8.83573 12.25 9.24994 12.25H11.2499V10.25C11.2499 9.8358 11.5857 9.50001 11.9999 9.50001C12.4142 9.50001 12.7499 9.8358 12.7499 10.25V12.25H14.7499C15.1642 12.25 15.4999 12.5858 15.4999 13C15.4999 13.4142 15.1642 13.75 14.7499 13.75H12.7499V15.75C12.7499 16.1642 12.4142 16.5 11.9999 16.5Z"/>
-                        </svg>
-                        <span class="font-medium">File Storage</span>
-                    </a>
-
-                    <a href="#" class="flex items-center justify-between text-dark hover:bg-gray-100 px-4 py-3 rounded-xl">
-                        <div class="flex items-center gap-4">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M2.26351 9.53885C2.09083 9.84105 2 10.1831 2 10.5311V18C2 19.1046 2.89543 20 4 20H20C21.1046 20 22 19.1046 22 18V10.5311C22 10.1831 21.9092 9.84105 21.7365 9.53885L18.5758 4.00772C18.2198 3.38457 17.5571 3 16.8394 3H7.16065C6.44293 3 5.78025 3.38457 5.42416 4.00772L2.26351 9.53885Z"/>
-                            </svg>
-                            <span class="font-medium">Inbox</span>
-                        </div>
-                        <span class="bg-accent text-white text-xs px-2 py-1 rounded-full">7</span>
-                    </a>
-
-                    <a href="#" class="flex items-center gap-4 text-dark hover:bg-gray-100 px-4 py-3 rounded-xl">
-                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12.0002 16C14.2094 16 16.0002 14.2091 16.0002 12C16.0002 9.79086 14.2094 8 12.0002 8C9.79109 8 8.00023 9.79086 8.00023 12C8.00023 14.2091 9.79109 16 12.0002 16Z"/>
-                        </svg>
-                        <span class="font-medium">Settings</span>
-                    </a>
-                </div>
+                <a href="#" class="flex items-center gap-4 text-dark hover:bg-gray-200 px-4 py-3 rounded-xl">
+                    <img src="http://localhost:3845/assets/fce742b5fcc20d2d76114b042f36479cce552bf2.svg" class="w-6 h-6" alt="Assignment Icon"/>
+                    <span class="font-medium">Assignment</span>
+                </a>
+                <a href="#" class="flex items-center justify-between text-dark hover:bg-gray-200 px-4 py-3 rounded-xl">
+                    <div class="flex items-center gap-4">
+                        <img src="http://localhost:3845/assets/6d9caf2799988720c263767ffd9242a5c1e5acb6.svg" class="w-6 h-6" alt="Reports Icon"/>
+                        <span class="font-medium">Reports</span>
+                    </div>
+                    <span class="bg-accent text-white text-xs font-bold w-6 h-6 flex items-center justify-center rounded-full">12</span>
+                </a>
+                <a href="#" class="flex items-center gap-4 text-dark hover:bg-gray-200 px-4 py-3 rounded-xl">
+                    <img src="http://localhost:3845/assets/3164caf8d2e93bcc3defe9205a3556f79a4c4c2f.svg" class="w-6 h-6" alt="File Storage Icon"/>
+                    <span class="font-medium">File Storage</span>
+                </a>
+                <a href="#" class="flex items-center justify-between text-dark hover:bg-gray-200 px-4 py-3 rounded-xl">
+                    <div class="flex items-center gap-4">
+                        <img src="http://localhost:3845/assets/c8b5d8cf0718e36be0bf51d24d3eeef1005b5c6d.svg" class="w-6 h-6" alt="Inbox Icon"/>
+                        <span class="font-medium">Inbox</span>
+                    </div>
+                    <span class="bg-accent text-white text-xs font-bold w-6 h-6 flex items-center justify-center rounded-full">7</span>
+                </a>
+                <a href="#" class="flex items-center gap-4 text-dark hover:bg-gray-200 px-4 py-3 rounded-xl">
+                    <img src="http://localhost:3845/assets/04da480a2861e10fefa58fd4daaf9feaadd0e7c9.svg" class="w-6 h-6" alt="Settings Icon"/>
+                    <span class="font-medium">Settings</span>
+                </a>
             </nav>
         </aside>
 
         <!-- Main Content -->
-        <main class="flex-1 p-8 overflow-y-auto">
+        <main class="flex-1 p-8 overflow-y-auto bg-white">
             <!-- Header -->
-            <div class="flex justify-between items-start mb-8">
+            <header class="flex justify-between items-center mb-8">
                 <div>
-                    <h2 class="text-2xl font-semibold text-dark mb-2">Hello Maietry 👋</h2>
-                    <p class="text-muted">Let's learn something new today!</p>
+                    <h2 class="text-2xl font-semibold text-dark flex items-center gap-2">
+                        Hello Maietry
+                        <img src="http://localhost:3845/assets/2eca6250ddbfaf850c3d63cebd3197369d12909d.svg" class="w-6 h-6" alt="Waving hand emoji"/>
+                    </h2>
+                    <p class="text-muted">Let’s learn something new today!</p>
                 </div>
                 <div class="flex items-center gap-4">
                     <div class="relative">
-                        <input type="text" placeholder="Search from courses..." 
-                               class="pl-4 pr-12 py-3 bg-white border border-gray-200 rounded-xl w-80">
-                        <svg class="absolute right-4 top-1/2 transform -translate-y-1/2 w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                        </svg>
+                        <input type="text" placeholder="Search from courses..." class="pl-4 pr-10 py-3 bg-white border border-gray-200 rounded-xl w-80" />
+                        <img src="http://localhost:3845/assets/aa78160844d2e9af9f69d922d59b24167f0c8fab.svg" class="absolute right-4 top-1/2 -translate-y-1/2 w-6 h-6 text-gray-400" alt="Search Icon"/>
                     </div>
-                    <button class="p-3 bg-white border border-gray-200 rounded-xl relative" aria-label="Notifications">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5z"/>
-                        </svg>
-                        <span class="absolute -top-1 -right-1 w-3 h-3 bg-accent rounded-full"></span>
+                    <button class="p-3 bg-white border border-gray-200 rounded-xl relative">
+                        <img src="http://localhost:3845/assets/dad5e838f2c62267949005905e6b12c9638378aa.svg" class="w-6 h-6" alt="Notifications"/>
+                        <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-accent rounded-full"></span>
                     </button>
                 </div>
-            </div>
+            </header>
 
             <!-- Course Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                 <!-- HTML & CSS Card -->
-                <div class="bg-gradient-to-br from-purple-100 to-purple-200 rounded-xl p-6 h-44 relative">
-                    <div class="absolute top-6 left-6">
-                        <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center">
-                            <div class="w-8 h-8 bg-purple-600 rounded-lg"></div>
-                        </div>
+                <div class="bg-course-1 rounded-xl p-6 h-44 flex flex-col justify-between">
+                    <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center">
+                        <img src="http://localhost:3845/assets/60bcd568c5e05d3f0338bcb893e5f858d70e241f.svg" class="w-8 h-8" alt="HTML/CSS Course Icon"/>
                     </div>
-                    <div class="absolute bottom-6 left-6 right-6">
-                        <h3 class="text-lg font-semibold text-dark mb-4">Basic: HTML and CSS</h3>
-                        <div class="bg-white/80 rounded-lg p-3">
-                            <div class="flex items-center justify-between text-xs">
+                    <div>
+                        <h3 class="text-lg font-semibold text-dark mb-2">Basic: HTML and CSS</h3>
+                        <div class="bg-course-1-light rounded-lg p-3 backdrop-blur-sm">
+                            <div class="flex items-center justify-between text-xs text-dark">
                                 <div class="flex items-center gap-2">
-                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 16 16">
-                                        <path d="M6 13.3334H2.33333C1.59695 13.3334 1 12.7364 1 12V4.00004C1 3.26366 1.59695 2.6667 2.33333 2.6667H6C6.8178 2.6667 7.54387 3.05938 8 3.66646C8.45613 3.05938 9.1822 2.6667 10 2.6667H13.6667C14.4031 2.6667 15 3.26366 15 4.00004V12C15 12.7364 14.4031 13.3334 13.6667 13.3334H10C9.40587 13.3334 8.8924 13.6788 8.64953 14.1798C8.52307 14.4406 8.2898 14.6667 8 14.6667C7.7102 14.6667 7.47693 14.4406 7.35047 14.1798C7.1076 13.6788 6.59413 13.3334 6 13.3334Z"/>
-                                    </svg>
-                                    <span>24</span>
+                                    <img src="http://localhost:3845/assets/6fc598d4c08b12b58a17592e9e4d43fc586a385c.svg" class="w-4 h-4" alt="Lessons"/><span>24</span>
                                 </div>
                                 <div class="w-px h-4 bg-gray-300"></div>
                                 <div class="flex items-center gap-2">
-                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 16 16">
-                                        <path d="M10.6667 6.66667C10.6667 6.9428 10.4428 7.16667 10.1667 7.16667H5.83333C5.55719 7.16667 5.33333 6.9428 5.33333 6.66667C5.33333 6.39053 5.55719 6.16667 5.83333 6.16667H10.1667C10.4428 6.16667 10.6667 6.39053 10.6667 6.66667Z"/>
-                                    </svg>
-                                    <span>8</span>
+                                    <img src="http://localhost:3845/assets/d57c9964004d1302a4e0bad5af667cf07e460461.svg" class="w-4 h-4" alt="Assignments"/><span>8</span>
                                 </div>
                                 <div class="w-px h-4 bg-gray-300"></div>
                                 <div class="flex items-center gap-2">
-                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 16 12">
-                                        <path d="M4.66667 5C6.04738 5 7.16667 3.88071 7.16667 2.5C7.16667 1.11929 6.04738 0 4.66667 0C3.28595 0 2.16667 1.11929 2.16667 2.5C2.16667 3.88071 3.28595 5 4.66667 5Z"/>
-                                    </svg>
-                                    <span>99</span>
+                                    <img src="http://localhost:3845/assets/af032e0d38632472c99cb5bc14bc9636dc9a3a56.svg" class="w-4 h-4" alt="Students"/><span>99</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
                 <!-- Branding Design Card -->
-                <div class="bg-gradient-to-br from-orange-100 to-orange-200 rounded-xl p-6 h-44 relative">
-                    <div class="absolute top-6 left-6">
-                        <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center">
-                            <svg class="w-8 h-8 text-orange-500" fill="currentColor" viewBox="0 0 32 32">
-                                <path d="M17.8644 7.72537C17.952 7.50049 18 7.25586 18 7C18 5.89543 17.1046 5 16 5C14.8954 5 14 5.89543 14 7C14 7.25586 14.048 7.50049 14.1356 7.72537L8.1472 13.3615C7.82243 13.1337 7.42683 13 7 13C5.89543 13 5 13.8954 5 15C5 16.1046 5.89543 17 7 17C8.10457 17 9 16.1046 9 15C9 14.8795 8.98934 14.7615 8.96892 14.6468L15.1631 8.817C15.4177 8.93447 15.7012 9 16 9C16.2988 9 16.5823 8.93447 16.8369 8.817L22.295 13.954C22.1079 14.2584 22 14.6166 22 15C22 16.1046 22.8954 17 24 17C25.1046 17 26 16.1046 26 15C26 13.8954 25.1046 13 24 13C23.8375 13 23.6795 13.0194 23.5282 13.056L17.8644 7.72537Z"/>
-                            </svg>
-                        </div>
+                <div class="bg-course-2 rounded-xl p-6 h-44 flex flex-col justify-between">
+                    <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center">
+                        <img src="http://localhost:3845/assets/6d7b827da0b873ffc5471c03d2b77aff8034d15c.svg" class="w-8 h-8" alt="Branding Course Icon"/>
                     </div>
-                    <div class="absolute bottom-6 left-6 right-6">
-                        <h3 class="text-lg font-semibold text-dark mb-4">Branding Design</h3>
-                        <div class="bg-white/80 rounded-lg p-3">
-                            <div class="flex items-center justify-between text-xs">
+                    <div>
+                        <h3 class="text-lg font-semibold text-dark mb-2">Branding Design</h3>
+                        <div class="bg-course-2-light rounded-lg p-3 backdrop-blur-sm">
+                            <div class="flex items-center justify-between text-xs text-dark">
                                 <div class="flex items-center gap-2">
-                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 16 16">
-                                        <path d="M6 13.3334H2.33333C1.59695 13.3334 1 12.7364 1 12V4.00004C1 3.26366 1.59695 2.6667 2.33333 2.6667H6C6.8178 2.6667 7.54387 3.05938 8 3.66646C8.45613 3.05938 9.1822 2.6667 10 2.6667H13.6667C14.4031 2.6667 15 3.26366 15 4.00004V12C15 12.7364 14.4031 13.3334 13.6667 13.3334H10C9.40587 13.3334 8.8924 13.6788 8.64953 14.1798C8.52307 14.4406 8.2898 14.6667 8 14.6667C7.7102 14.6667 7.47693 14.4406 7.35047 14.1798C7.1076 13.6788 6.59413 13.3334 6 13.3334Z"/>
-                                    </svg>
-                                    <span>24</span>
+                                    <img src="http://localhost:3845/assets/6fc598d4c08b12b58a17592e9e4d43fc586a385c.svg" class="w-4 h-4" alt="Lessons"/><span>24</span>
                                 </div>
                                 <div class="w-px h-4 bg-gray-300"></div>
                                 <div class="flex items-center gap-2">
-                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 16 16">
-                                        <path d="M10.6667 6.66667C10.6667 6.9428 10.4428 7.16667 10.1667 7.16667H5.83333C5.55719 7.16667 5.33333 6.9428 5.33333 6.66667C5.33333 6.39053 5.55719 6.16667 5.83333 6.16667H10.1667C10.4428 6.16667 10.6667 6.39053 10.6667 6.66667Z"/>
-                                    </svg>
-                                    <span>8</span>
+                                    <img src="http://localhost:3845/assets/d57c9964004d1302a4e0bad5af667cf07e460461.svg" class="w-4 h-4" alt="Assignments"/><span>8</span>
                                 </div>
                                 <div class="w-px h-4 bg-gray-300"></div>
                                 <div class="flex items-center gap-2">
-                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 16 12">
-                                        <path d="M4.66667 5C6.04738 5 7.16667 3.88071 7.16667 2.5C7.16667 1.11929 6.04738 0 4.66667 0C3.28595 0 2.16667 1.11929 2.16667 2.5C2.16667 3.88071 3.28595 5 4.66667 5Z"/>
-                                    </svg>
-                                    <span>99</span>
+                                    <img src="http://localhost:3845/assets/af032e0d38632472c99cb5bc14bc9636dc9a3a56.svg" class="w-4 h-4" alt="Students"/><span>99</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
                 <!-- Motion Design Card -->
-                <div class="bg-gradient-to-br from-green-100 to-green-200 rounded-xl p-6 h-44 relative">
-                    <div class="absolute top-6 left-6">
-                        <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center">
-                            <svg class="w-8 h-8 text-green-600" fill="currentColor" viewBox="0 0 32 32">
-                                <path d="M10 17.5C11.7574 15.7426 13.5 14 14.5 13C15.5 12 16.5 15.5 17.5 15.5C18.5 15.5 21.5 11 21.5 11"/>
-                            </svg>
-                        </div>
+                <div class="bg-course-3 rounded-xl p-6 h-44 flex flex-col justify-between">
+                    <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center">
+                         <img src="http://localhost:3845/assets/4909a270a741c7a0f21b253ac5d22fb56ec3bdac.svg" class="w-8 h-8" alt="Motion Design Course Icon"/>
                     </div>
-                    <div class="absolute bottom-6 left-6 right-6">
-                        <h3 class="text-lg font-semibold text-dark mb-4">Motion Design</h3>
-                        <div class="bg-white/80 rounded-lg p-3">
-                            <div class="flex items-center justify-between text-xs">
+                    <div>
+                        <h3 class="text-lg font-semibold text-dark mb-2">Motion Design</h3>
+                        <div class="bg-course-3-light rounded-lg p-3 backdrop-blur-sm">
+                            <div class="flex items-center justify-between text-xs text-dark">
                                 <div class="flex items-center gap-2">
-                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 16 16">
-                                        <path d="M6 13.3334H2.33333C1.59695 13.3334 1 12.7364 1 12V4.00004C1 3.26366 1.59695 2.6667 2.33333 2.6667H6C6.8178 2.6667 7.54387 3.05938 8 3.66646C8.45613 3.05938 9.1822 2.6667 10 2.6667H13.6667C14.4031 2.6667 15 3.26366 15 4.00004V12C15 12.7364 14.4031 13.3334 13.6667 13.3334H10C9.40587 13.3334 8.8924 13.6788 8.64953 14.1798C8.52307 14.4406 8.2898 14.6667 8 14.6667C7.7102 14.6667 7.47693 14.4406 7.35047 14.1798C7.1076 13.6788 6.59413 13.3334 6 13.3334Z"/>
-                                    </svg>
-                                    <span>24</span>
+                                    <img src="http://localhost:3845/assets/6fc598d4c08b12b58a17592e9e4d43fc586a385c.svg" class="w-4 h-4" alt="Lessons"/><span>24</span>
                                 </div>
                                 <div class="w-px h-4 bg-gray-300"></div>
                                 <div class="flex items-center gap-2">
-                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 16 16">
-                                        <path d="M10.6667 6.66667C10.6667 6.9428 10.4428 7.16667 10.1667 7.16667H5.83333C5.55719 7.16667 5.33333 6.9428 5.33333 6.66667C5.33333 6.39053 5.55719 6.16667 5.83333 6.16667H10.1667C10.4428 6.16667 10.6667 6.39053 10.6667 6.66667Z"/>
-                                    </svg>
-                                    <span>8</span>
+                                    <img src="http://localhost:3845/assets/d57c9964004d1302a4e0bad5af667cf07e460461.svg" class="w-4 h-4" alt="Assignments"/><span>8</span>
                                 </div>
                                 <div class="w-px h-4 bg-gray-300"></div>
                                 <div class="flex items-center gap-2">
-                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 16 12">
-                                        <path d="M4.66667 5C6.04738 5 7.16667 3.88071 7.16667 2.5C7.16667 1.11929 6.04738 0 4.66667 0C3.28595 0 2.16667 1.11929 2.16667 2.5C2.16667 3.88071 3.28595 5 4.66667 5Z"/>
-                                    </svg>
-                                    <span>99</span>
+                                    <img src="http://localhost:3845/assets/af032e0d38632472c99cb5bc14bc9636dc9a3a56.svg" class="w-4 h-4" alt="Students"/><span>99</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
             <!-- Analytics Section -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <section class="grid grid-cols-1 lg:grid-cols-5 gap-6 mb-8">
                 <!-- Hours Spent Chart -->
-                <div class="bg-white rounded-xl p-6 border border-gray-200">
+                <div class="lg:col-span-3 bg-white rounded-xl p-6 border border-gray-200">
                     <h3 class="text-xl font-semibold text-dark mb-4">Hours Spent</h3>
                     <div class="h-80 relative">
-                        <!-- Chart placeholder -->
-                        <div class="absolute inset-0 flex items-end justify-between px-4 pb-8">
-                            <div class="flex flex-col items-center">
-                                <div class="w-12 bg-orange-200 rounded-t-lg mb-2 bar-jan-study"></div>
-                                <div class="w-12 bg-orange-500 rounded-t-lg bar-jan-exams"></div>
-                                <span class="text-xs text-muted mt-2">Jan</span>
-                            </div>
-                            <div class="flex flex-col items-center">
-                                <div class="w-12 bg-orange-200 rounded-t-lg mb-2 bar-feb-study"></div>
-                                <div class="w-12 bg-orange-500 rounded-t-lg bar-feb-exams"></div>
-                                <span class="text-xs text-muted mt-2">Feb</span>
-                            </div>
-                            <div class="flex flex-col items-center">
-                                <div class="w-12 bg-orange-200 rounded-t-lg mb-2 bar-mar-study"></div>
-                                <div class="w-12 bg-orange-500 rounded-t-lg bar-mar-exams"></div>
-                                <span class="text-xs text-muted mt-2">Mar</span>
-                            </div>
-                            <div class="flex flex-col items-center">
-                                <div class="w-12 bg-orange-200 rounded-t-lg mb-2 bar-apr-study"></div>
-                                <div class="w-12 bg-orange-500 rounded-t-lg bar-apr-exams"></div>
-                                <span class="text-xs text-muted mt-2">Apr</span>
-                            </div>
-                            <div class="flex flex-col items-center">
-                                <div class="w-12 bg-orange-200 rounded-t-lg mb-2 bar-may-study"></div>
-                                <div class="w-12 bg-orange-500 rounded-t-lg bar-may-exams"></div>
-                                <span class="text-xs text-muted mt-2">May</span>
-                            </div>
-                        </div>
-                        <!-- Legend -->
+                         <!-- Legend -->
                         <div class="absolute top-0 left-0 flex items-center gap-4">
                             <div class="flex items-center gap-2">
                                 <div class="w-4 h-4 bg-secondary rounded"></div>
                                 <span class="text-xs text-muted">Study</span>
                             </div>
                             <div class="flex items-center gap-2">
-                                <div class="w-4 h-4 bg-orange-200 rounded"></div>
+                                <div class="w-4 h-4 bg-[#F8EFE2] rounded"></div>
                                 <span class="text-xs text-muted">Exams</span>
+                            </div>
+                        </div>
+                        <!-- Chart -->
+                        <div class="absolute inset-0 flex items-end justify-between px-4 pb-8 pt-16">
+                            <div class="w-full h-full flex justify-around items-end">
+                                <div class="text-center">
+                                    <div class="h-[147px] w-12 bg-[#F8EFE2] rounded-t-lg relative"><div class="absolute bottom-0 h-[79px] w-12 bg-secondary rounded-t-lg"></div></div>
+                                    <span class="text-xs text-muted mt-2">Jan</span>
+                                </div>
+                                <div class="text-center">
+                                    <div class="h-[89px] w-12 bg-[#F8EFE2] rounded-t-lg relative"><div class="absolute bottom-0 h-[46px] w-12 bg-secondary rounded-t-lg"></div></div>
+                                    <span class="text-xs text-muted mt-2">Feb</span>
+                                </div>
+                                <div class="text-center">
+                                    <div class="h-[160px] w-12 bg-[#F8EFE2] rounded-t-lg relative"><div class="absolute bottom-0 h-[137px] w-12 bg-secondary rounded-t-lg"></div></div>
+                                    <span class="text-xs text-muted mt-2">Mar</span>
+                                </div>
+                                <div class="text-center">
+                                    <div class="h-[113px] w-12 bg-[#F8EFE2] rounded-t-lg relative"><div class="absolute bottom-0 h-[78px] w-12 bg-secondary rounded-t-lg"></div></div>
+                                    <span class="text-xs text-muted mt-2">Apr</span>
+                                </div>
+                                <div class="text-center">
+                                    <div class="h-[54px] w-12 bg-[#F8EFE2] rounded-t-lg relative"><div class="absolute bottom-0 h-[34px] w-12 bg-secondary rounded-t-lg"></div></div>
+                                    <span class="text-xs text-muted mt-2">May</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
                 <!-- Performance Chart -->
-                <div class="bg-white rounded-xl p-6 border border-gray-200">
+                <div class="lg:col-span-2 bg-white rounded-xl p-6 border border-gray-200">
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="text-xl font-semibold text-dark">Performance</h3>
                         <div class="bg-gray-100 px-3 py-1 rounded-lg flex items-center gap-2">
                             <span class="text-xs text-gray-600">Monthly</span>
-                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                            </svg>
+                            <img src="http://localhost:3845/assets/cd5edb42df245c562a31fbbc7c5afe6bb679c648.svg" class="w-3 h-3" alt="Dropdown Icon"/>
                         </div>
                     </div>
                     <div class="h-80 relative flex items-center justify-center">
-                        <!-- Circular progress -->
-                        <div class="relative">
-                            <svg class="w-32 h-32 transform -rotate-90" viewBox="0 0 100 100">
-                                <circle cx="50" cy="50" r="40" stroke="#E5E7EB" stroke-width="8" fill="none"/>
-                                <circle cx="50" cy="50" r="40" stroke="#3BAFA8" stroke-width="8" fill="none" 
-                                        stroke-dasharray="251.2" stroke-dashoffset="75.36" stroke-linecap="round"/>
+                        <div class="relative w-40 h-40">
+                            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 120 120">
+                                <circle cx="60" cy="60" r="54" stroke="#E5E7EB" stroke-width="12" fill="none" />
+                                <circle cx="60" cy="60" r="54" stroke="#3BAFA8" stroke-width="12" fill="none" stroke-dasharray="339.292" stroke-dashoffset="67.8584" stroke-linecap="round" />
                             </svg>
                             <div class="absolute inset-0 flex flex-col items-center justify-center">
-                                <span class="text-2xl font-bold text-dark">8.966</span>
+                                <span class="text-3xl font-bold text-dark">8.966</span>
                                 <span class="text-sm text-muted">Your Point</span>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
             <!-- Leader Board -->
-            <div class="bg-white rounded-xl p-6 border border-gray-200">
+            <section class="bg-white rounded-xl p-6 border border-gray-200">
                 <h3 class="text-xl font-semibold text-dark mb-4">Leader Board</h3>
                 <div class="overflow-x-auto">
                     <table class="w-full">
                         <thead>
                             <tr class="border-b border-gray-200">
-                                <th class="text-left py-3 text-xs text-muted font-medium">RANK</th>
-                                <th class="text-left py-3 text-xs text-muted font-medium">NAME</th>
-                                <th class="text-left py-3 text-xs text-muted font-medium">COURSE</th>
-                                <th class="text-left py-3 text-xs text-muted font-medium">HOUR</th>
-                                <th class="text-left py-3 text-xs text-muted font-medium">POINT</th>
+                                <th class="text-left py-3 px-2 text-xs text-muted font-medium">RANK</th>
+                                <th class="text-left py-3 px-2 text-xs text-muted font-medium">NAME</th>
+                                <th class="text-left py-3 px-2 text-xs text-muted font-medium">COURSE</th>
+                                <th class="text-left py-3 px-2 text-xs text-muted font-medium">HOUR</th>
+                                <th class="text-left py-3 px-2 text-xs text-muted font-medium">POINT</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr class="border-b border-gray-100">
-                                <td class="py-4">
+                                <td class="py-4 px-2">
                                     <div class="flex items-center gap-2">
-                                        <div class="w-6 h-6 bg-gray-100 rounded flex items-center justify-center">
-                                            <span class="text-xs font-semibold">1</span>
-                                        </div>
-                                        <svg class="w-3 h-3 text-primary" fill="currentColor" viewBox="0 0 12 6">
-                                            <path d="M6 0L12 6H0L6 0Z"/>
-                                        </svg>
+                                        <div class="w-6 h-6 bg-gray-100 rounded flex items-center justify-center"><span class="text-xs font-semibold">1</span></div>
+                                        <img src="http://localhost:3845/assets/76750a5fd7c712133b7a4b0c4f37f3be25180f70.svg" class="w-3 h-3 text-primary" alt="Rank up"/>
                                     </div>
                                 </td>
-                                <td class="py-4">
+                                <td class="py-4 px-2">
                                     <div class="flex items-center gap-3">
-                                        <div class="w-6 h-6 bg-gray-200 rounded-full"></div>
+                                        <img src="http://localhost:3845/assets/d8607052dcf0ccc988f0d86d255cdad9b1fb49c1.png" class="w-6 h-6 rounded-full" alt="Charlie Rawal"/>
                                         <span class="font-medium text-sm">Charlie Rawal</span>
                                     </div>
                                 </td>
-                                <td class="py-4 text-sm text-muted">53</td>
-                                <td class="py-4 text-sm text-muted">250</td>
-                                <td class="py-4 text-sm font-semibold text-primary">13.450</td>
+                                <td class="py-4 px-2 text-sm text-muted">53</td>
+                                <td class="py-4 px-2 text-sm text-muted">250</td>
+                                <td class="py-4 px-2 text-sm font-semibold text-primary">13.450</td>
                             </tr>
-                            <tr>
-                                <td class="py-4">
+                             <tr>
+                                <td class="py-4 px-2">
                                     <div class="flex items-center gap-2">
-                                        <div class="w-6 h-6 bg-gray-100 rounded flex items-center justify-center">
-                                            <span class="text-xs font-semibold">2</span>
-                                        </div>
-                                        <svg class="w-3 h-3 text-accent transform rotate-180" fill="currentColor" viewBox="0 0 12 6">
-                                            <path d="M6 0L12 6H0L6 0Z"/>
-                                        </svg>
+                                        <div class="w-6 h-6 bg-gray-100 rounded flex items-center justify-center"><span class="text-xs font-semibold">2</span></div>
+                                        <img src="http://localhost:3845/assets/29b90e19af5b0fc0265c2b0fd5b5847930f04c82.svg" class="w-3 h-3 text-accent" alt="Rank down"/>
                                     </div>
                                 </td>
-                                <td class="py-4">
+                                <td class="py-4 px-2">
                                     <div class="flex items-center gap-3">
-                                        <div class="w-6 h-6 bg-gray-200 rounded-full"></div>
+                                        <img src="http://localhost:3845/assets/12e0fdf1a210d9754ee6af4ea975871417d788d8.png" class="w-6 h-6 rounded-full" alt="Ariana Agarwal"/>
                                         <span class="font-medium text-sm">Ariana Agarwal</span>
                                     </div>
                                 </td>
-                                <td class="py-4 text-sm text-muted">88</td>
-                                <td class="py-4 text-sm text-muted">212</td>
-                                <td class="py-4 text-sm font-semibold text-primary">10.333</td>
+                                <td class="py-4 px-2 text-sm text-muted">88</td>
+                                <td class="py-4 px-2 text-sm text-muted">212</td>
+                                <td class="py-4 px-2 text-sm font-semibold text-primary">10.333</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </section>
         </main>
 
-        <!-- Profile Sidebar -->
-        <aside class="w-80 bg-white border-l border-gray-200 p-6">
-            <!-- Profile Header -->
-            <div class="text-center mb-8">
-                <h2 class="text-xl font-semibold text-dark mb-6">Profile</h2>
+        <!-- Right Sidebar -->
+        <aside class="w-96 bg-white border-l border-gray-200 p-6 rounded-r-3xl flex flex-col">
+             <!-- Profile Header -->
+            <div class="text-center mb-6">
+                <h2 class="text-xl font-semibold text-dark mb-6 text-left">Profile</h2>
                 <div class="relative inline-block">
-                    <div class="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4 relative">
-                        <div class="absolute inset-0 rounded-full border-4 border-primary/20"></div>
-                    </div>
+                    <img src="http://localhost:3845/assets/46fdcb487ad73eef525a3f0ccd7022ba65ab4b09.png" class="w-24 h-24 rounded-full mx-auto" alt="Maietry Prajapati"/>
+                    <img src="http://localhost:3845/assets/b77128301015e2e73d4440e42f57c77ad633b1fc.svg" class="w-40 h-24 absolute top-0 left-0 inset-0" alt="Profile ring"/>
                     <div class="absolute top-0 right-0 w-6 h-6 bg-green-500 rounded-full border-2 border-white flex items-center justify-center">
-                        <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 12 12">
-                            <path d="M4.5 8.5L2 6L1 7L4.5 10.5L11 4L10 3L4.5 8.5Z"/>
-                        </svg>
+                         <img src="http://localhost:3845/assets/d3fefc5b055c67511b633cb79a9ff807aa330b77.svg" class="w-3 h-3 text-white" alt="Verified"/>
                     </div>
                 </div>
-                <h3 class="text-lg font-semibold text-dark mb-1">Maietry Prajapati</h3>
+                <h3 class="text-lg font-semibold text-dark mb-1 mt-4">Maietry Prajapati</h3>
                 <p class="text-sm text-muted">College Student</p>
-                <button class="mt-4 p-2 bg-white border border-gray-200 rounded-lg" aria-label="Edit profile">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                    </svg>
+                <button class="mt-4 p-3 bg-white border border-gray-200 rounded-lg absolute top-6 right-6" aria-label="Edit profile">
+                     <img src="http://localhost:3845/assets/12074f860aa76796d69467d0b379e44e79d9ea60.svg" class="w-5 h-5" alt="Edit profile"/>
                 </button>
             </div>
-
-            <!-- Calendar -->
-            <div class="bg-gray-50 rounded-3xl p-6 mb-6">
-                <div class="flex items-center justify-between mb-4">
-                    <button class="p-1" aria-label="Previous month">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                        </svg>
-                    </button>
-                    <span class="text-sm font-semibold">December 2021</span>
-                    <button class="p-1" aria-label="Next month">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                        </svg>
-                    </button>
-                </div>
-                <div class="grid grid-cols-7 gap-1 mb-2">
-                    <span class="text-xs text-center text-muted">M</span>
-                    <span class="text-xs text-center text-muted">T</span>
-                    <span class="text-xs text-center text-muted">W</span>
-                    <span class="text-xs text-center text-muted">T</span>
-                    <span class="text-xs text-center text-muted">F</span>
-                    <span class="text-xs text-center text-muted">S</span>
-                    <span class="text-xs text-center text-muted">S</span>
-                </div>
-                <div class="grid grid-cols-7 gap-1">
-                    <div class="w-6 h-6 rounded-full flex items-center justify-center text-xs">24</div>
-                    <div class="w-6 h-6 bg-primary rounded-full flex items-center justify-center text-xs text-white">25</div>
-                    <div class="w-6 h-6 rounded-full flex items-center justify-center text-xs">26</div>
-                    <div class="w-6 h-6 rounded-full flex items-center justify-center text-xs">27</div>
-                    <div class="w-6 h-6 rounded-full flex items-center justify-center text-xs">28</div>
-                    <div class="w-6 h-6 rounded-full flex items-center justify-center text-xs">29</div>
-                    <div class="w-6 h-6 rounded-full flex items-center justify-center text-xs">30</div>
-                </div>
-            </div>
+            <hr class="my-4"/>
 
             <!-- To Do List -->
-            <div class="space-y-4">
-                <h3 class="text-lg font-semibold text-dark text-center">To Do List</h3>
-                
-                <!-- Task 1 -->
-                <div class="flex items-start gap-3">
-                    <div class="w-4 h-4 border-2 border-gray-400 rounded mt-1"></div>
-                    <div class="flex-1">
-                        <h4 class="text-sm font-semibold text-dark">Developing Restaurant Apps</h4>
-                        <div class="flex items-center gap-2 mt-1">
-                            <span class="text-xs text-muted">Programming</span>
-                            <div class="w-px h-3 bg-gray-200"></div>
-                            <span class="text-xs font-semibold text-secondary">08:00 AM</span>
+            <div class="flex-1 flex flex-col">
+                <h3 class="text-lg font-semibold text-dark text-center mb-4">To Do List</h3>
+                <div class="space-y-4">
+                    <!-- Task 1 -->
+                    <div class="flex items-start gap-3">
+                        <div class="w-5 h-5 border-2 border-gray-400 rounded mt-1"></div>
+                        <div class="flex-1">
+                            <h4 class="text-sm font-semibold text-dark">Developing Restaurant Apps</h4>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="text-xs text-muted">Programming</span>
+                                <div class="w-px h-3 bg-gray-200"></div>
+                                <span class="text-xs font-semibold text-secondary">08:00 AM</span>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Sub tasks -->
-                <div class="ml-7 space-y-2">
-                    <div class="flex items-center gap-3">
-                        <div class="w-4 h-4 border-2 border-gray-400 rounded"></div>
-                        <span class="text-sm font-semibold text-dark">Integrate API</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <div class="w-4 h-4 border-2 border-gray-400 rounded"></div>
-                        <span class="text-sm font-semibold text-dark">Slicing Home Screen</span>
-                    </div>
-                </div>
-
-                <!-- Task 2 -->
-                <div class="flex items-start gap-3">
-                    <div class="w-4 h-4 border-2 border-gray-400 rounded mt-1"></div>
-                    <div class="flex-1">
-                        <h4 class="text-sm font-semibold text-dark">Research Objective User</h4>
-                        <div class="flex items-center gap-2 mt-1">
-                            <span class="text-xs text-muted">Product Design</span>
-                            <div class="w-px h-3 bg-gray-200"></div>
-                            <span class="text-xs font-semibold text-secondary">02:40 PM</span>
+                    <!-- Sub tasks -->
+                    <div class="ml-8 space-y-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-5 h-5 border-2 border-gray-400 rounded"></div>
+                            <span class="text-sm text-dark">Integrate API</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-5 h-5 border-2 border-gray-400 rounded"></div>
+                            <span class="text-sm text-dark">Slicing Home Screen</span>
                         </div>
                     </div>
-                </div>
 
-                <!-- Completed Task -->
-                <div class="flex items-start gap-3">
-                    <div class="w-4 h-4 bg-primary rounded flex items-center justify-center mt-1">
-                        <svg class="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 12 12">
-                            <path d="M4.5 8.5L2 6L1 7L4.5 10.5L11 4L10 3L4.5 8.5Z"/>
-                        </svg>
+                    <hr class="my-2 border-dashed"/>
+
+                    <!-- Task 2 -->
+                    <div class="flex items-start gap-3">
+                        <div class="w-5 h-5 border-2 border-gray-400 rounded mt-1"></div>
+                        <div class="flex-1">
+                            <h4 class="text-sm font-semibold text-dark">Research Objective User</h4>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="text-xs text-muted">Product Design</span>
+                                <div class="w-px h-3 bg-gray-200"></div>
+                                <span class="text-xs font-semibold text-secondary">02:40 PM</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="flex-1">
-                        <h4 class="text-sm font-semibold text-dark line-through">Report Analysis P2P Business</h4>
-                        <div class="flex items-center gap-2 mt-1">
-                            <span class="text-xs text-muted">Business</span>
-                            <div class="w-px h-3 bg-gray-200"></div>
-                            <span class="text-xs font-semibold text-secondary">04:50 PM</span>
+
+                    <hr class="my-2 border-dashed"/>
+                    
+                    <!-- Completed Task -->
+                    <div class="flex items-start gap-3">
+                        <div class="w-5 h-5 bg-primary rounded flex items-center justify-center mt-1">
+                           <img src="http://localhost:3845/assets/c30fb9b3a3d2e38c1bf279dcc16706548743c5ca.svg" class="w-3 h-3 text-white" alt="Check mark"/>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-sm text-dark line-through">Report Analysis P2P Business</h4>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="text-xs text-muted">Business</span>
+                                <div class="w-px h-3 bg-gray-200"></div>
+                                <span class="text-xs font-semibold text-secondary">04:50 PM</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -508,4 +399,4 @@
         </aside>
     </div>
 </body>
-</html> 
+</html>
